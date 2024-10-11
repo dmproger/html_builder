@@ -15,7 +15,7 @@ module HTML
     end
   end
 
-  module Output
+  module Result
     TAGS = %w(h1 div p svg rect)
 
     for tag in TAGS
@@ -31,7 +31,7 @@ module HTML
   end
 
   class << self
-    prepend Output
+    prepend Result
 
     def svg(width, height, &block)
       build_tag('svg', attrs: { width:, height:, xmlns: "http://www.w3.org/2000/svg" }, body: block&.call)
