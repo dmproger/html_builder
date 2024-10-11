@@ -8,7 +8,7 @@ module HTML
 
     def serialize
       attributes = @attrs&.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')
-      open_tag = "<#{@tag} #{attributes}>".gsub(/\s>/, '>')
+      open_tag = "<#{@tag} #{attributes}>".sub(/\s>/, '>')
       close_tag = "</#{@tag}>"
 
       "#{open_tag}#{@body}#{close_tag}"
