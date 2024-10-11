@@ -20,12 +20,12 @@ module HTML
 
     for tag in TAGS
       define_method(tag) do |*args, **params, &block|
-        @initial ||= __method__
+        @root ||= __method__
         result = super(*args, **params, &block).serialize
-        return result unless @initial == __method__
+        return result unless @root == __method__
 
         puts(result)
-        @initial = nil
+        @root = nil
       end
     end
   end
