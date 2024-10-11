@@ -1,9 +1,9 @@
 # HTML builder DSL
-Simlpe DSL for creating HTML markup
+Simlpe DSL for creating HTML markup in Ruby
 
 # Install and try
 ```bash
-git clone git@github.com:dmproger/html_builder.git
+git clone https://github.com/dmproger/html_builder
 cd html_builder
 ruby main.rb
 ```
