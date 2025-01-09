@@ -5,6 +5,7 @@ h = HTML
 h.h1 'Svg example'
 
 h.div do
+  h.p 'foo'
   h.svg 300, 200 do
     h.rect 100, 50, 10, 20
   end
