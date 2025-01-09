@@ -17,7 +17,7 @@ class HTML
       define_method(tag) do |*args, **attrs, &block|
         @root ||= __method__
 
-        result = Tag.call(__method__, **attrs.merge(super(*args)).merge(body: block&.call))
+        result = Tag.call(__method__, **attrs.merge(super(*args)).merge({ body: block&.call }.compact))
         return result unless @root == __method__
 
         @buffer ? @buffer += result : @stdout.puts(result)
