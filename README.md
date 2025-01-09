@@ -1,5 +1,5 @@
-# HTML builder DSL
-Simlpe DSL for creating HTML markup in Ruby
+# SGML builder in Ruby
+Simlpe DSL for creating SGML(HTML or other) markup
 
 # Install and try
 ```bash
@@ -10,9 +10,9 @@ ruby main.rb
 
 # Usage
 ```ruby
-require_relative 'lib/html'
+require_relative 'lib/sgml'
 
-h = HTML.printer
+h = SGML.printer
 
 h.h1 'PRINTER example'
 h.input placeholder: 'your value'
@@ -26,7 +26,7 @@ h.p { 'Have a nice day again!' }
 
 p '---------------------------'
 
-h = HTML.buffer(namespace: 'foo')
+h = SGML.buffer(namespace: 'foo')
 
 h.h1 'BUFFER example'
 h.input placeholder: 'your value'
@@ -45,7 +45,6 @@ p h.buffer!
 FIX output for non-block tags in block:
 
 ```ruby
-h = HTML.printer
 h.div do
   h.p 'hello' # <- that one
   h.span 'hello' # <- and that one
