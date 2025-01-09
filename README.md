@@ -14,7 +14,8 @@ require_relative 'lib/html'
 
 h = HTML.printer
 
-h.h1 'PRINTER example'
+h.h1 'PRINTER example', color: 'green'
+h.input placeholder: 'your value'
 h.div do
   h.svg 300, 200 do
     h.rect 100, 50, 10, 20
@@ -27,7 +28,8 @@ p '---------------------------'
 
 h = HTML.buffer
 
-h.h1 'BUFFER example'
+h.h1 'BUFFER example', color: 'blue'
+h.input placeholder: 'your value'
 h.div do
   h.svg 300, 200 do
     h.rect 100, 50, 10, 20
