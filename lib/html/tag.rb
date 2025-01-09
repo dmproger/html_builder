@@ -1,17 +1,11 @@
 module HTML
   class Tag
-    def initialize(tag, **params)
-      @tag = tag
-      @body = params.delete(:body)
-      @attrs = params
-    end
+    def call(tag, **params)
+      body = params&.delete(:body)
+      attrs = params&.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')
+      tag_with_attrs = "<#{tag} #{attrs}>".sub(/\s>/, '>')
 
-    def serialize
-      attributes = @attrs&.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')
-      open_tag = "<#{@tag} #{attributes}>".sub(/\s>/, '>')
-      close_tag = "</#{@tag}>"
-
-      "#{open_tag}#{@body}#{close_tag}"
+      "#{tag_with_attrs}#{body}</#{tag}>"
     end
   end
 end
