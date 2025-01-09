@@ -17,7 +17,7 @@ class HTML
       define_method(tag) do |*args, **attrs, &block|
         @root ||= __method__
 
-        result = Tag.call(__method__, **attrs.merge(super(*args)).merge({ body: block&.call }.compact))
+        result = Tag.call("#{@namespace}#{__method__}", **attrs.merge(super(*args)).merge({ body: block&.call }.compact))
         return result unless @root == __method__
 
         @buffer ? @buffer += result : @stdout.puts(result)
@@ -27,17 +27,21 @@ class HTML
   end
 
   class << self
-    def buffer
-      new.tap { |html| html.instance_eval { @buffer = '' } }
+    def buffer(namespace: nil)
+      new(namespace).tap { |html| html.instance_eval { @buffer = '' } }
     end
 
-    def printer(stdout: $stdout)
-      new.tap { |html| html.instance_eval { @stdout = stdout } }
+    def printer(namespace: nil, stdout: $stdout)
+      new(namespace).tap { |html| html.instance_eval { @stdout = stdout } }
     end
   end
 
   prepend Renderer
   include Dsl
+
+  def initialize(namespace)
+    @namespace = namespace += ':' if namespace
+  end
 
   def buffer!
     @buffer
