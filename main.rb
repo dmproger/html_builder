@@ -1,6 +1,6 @@
-require_relative 'lib/html'
+require_relative 'lib/sgml'
 
-h = HTML.printer
+h = SGML.printer
 
 h.h1 'PRINTER example'
 h.input placeholder: 'your value'
@@ -14,7 +14,7 @@ h.p { 'Have a nice day again!' }
 
 p '---------------------------'
 
-h = HTML.buffer(namespace: 'foo')
+h = SGML.buffer(namespace: 'foo')
 
 h.h1 'BUFFER example'
 h.input placeholder: 'your value'

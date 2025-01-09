@@ -1,4 +1,4 @@
-class HTML
+class SGML
   module Dsl
     # todo remove and onfly with method_missing
     METHODS = %w(h1 div span p input svg rect) 

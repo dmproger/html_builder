@@ -1,4 +1,4 @@
-class HTML
+class SGML
   module Tag
     module_function
 
@@ -11,7 +11,7 @@ class HTML
   end
 
   module Renderer
-    require_relative 'html/dsl'
+    require_relative 'sgml/dsl'
 
     for tag in Dsl::METHODS
       define_method(tag) do |*args, **attrs, &block|
