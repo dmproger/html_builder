@@ -2,24 +2,24 @@ class HTML
   module Dsl
     METHODS = %w(h1 div p svg rect)
 
-    def svg(width, height, &block)
-      { width:, height:, xmlns: "http://www.w3.org/2000/svg", body: block&.call }
+    def svg(width, height)
+      { width:, height:, xmlns: "http://www.w3.org/2000/svg" }
     end
 
-    def rect(width, height, x, y, &block)
-      { width:, height:, x:, y:, body: block&.call }
+    def rect(width, height, x, y)
+      { width:, height:, x:, y:}
     end
 
-    def div(body = nil, &block)
-      { body: body || block&.call }
+    def div(body = nil)
+      { body: }
     end
 
-    def h1(body = nil, &block)
-      { body: body || block&.call }
+    def h1(body = nil)
+      { body: }
     end
 
-    def p(body = nil, &block)
-      { body: body || block&.call }
+    def p(body = nil)
+      { body: }
     end
   end
 end
