@@ -10,27 +10,45 @@ ruby main.rb
 
 # Usage
 ```ruby
-# you are in pwd of cloned repo:
 require_relative 'lib/html'
 
-HTML.h1 'Svg example'
+h = HTML.printer
 
-HTML.div do
-  HTML.svg 300, 200 do
-    HTML.rect 100, 50, 10, 20
+h.h1 'PRINTER example'
+h.div do
+  h.svg 300, 200 do
+    h.rect 100, 50, 10, 20
   end
 end
+h.p 'Have a nice day!'
+h.p { 'Have a nice day again!' }
 
-HTML.p 'Have a nice day!'
+p '---------------------------'
+
+h = HTML.buffer
+
+h.h1 'BUFFER example'
+h.div do
+  h.svg 300, 200 do
+    h.rect 100, 50, 10, 20
+  end
+end
+h.p 'Have a nice day!'
+h.p { 'Have a nice day again!' }
+
+p h.buffer!
 ```
 
 # TODO
-Output for non-block tags in block:
+FIX output for non-block tags in block:
+
 ```ruby
-HTML.div do
-  HTML.p 'hello' # <- that one
-  HTML.div do
-    HTML.p 'world'
+h = HTML.printer
+h.div do
+  h.p 'hello' # <- that one
+  h.span 'hello' # <- and that one
+  h.div do
+    h.p 'world'
   end
 end
 ```

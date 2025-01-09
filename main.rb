@@ -2,7 +2,7 @@ require_relative 'lib/html'
 
 h = HTML.printer
 
-h.h1 'PRINTER Svg example'
+h.h1 'PRINTER example'
 h.div do
   h.svg 300, 200 do
     h.rect 100, 50, 10, 20
@@ -11,9 +11,11 @@ end
 h.p 'Have a nice day!'
 h.p { 'Have a nice day again!' }
 
+p '---------------------------'
+
 h = HTML.buffer
 
-h.h1 'BUFFER Svg example'
+h.h1 'BUFFER example'
 h.div do
   h.svg 300, 200 do
     h.rect 100, 50, 10, 20
