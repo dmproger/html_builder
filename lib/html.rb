@@ -1,62 +1,29 @@
 module HTML
-  class Tag
-    def initialize(tag, attrs:, body:)
-      @tag = tag
-      @attrs = attrs
-      @body = body
-    end
-
-    def serialize
-      attributes = @attrs&.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')
-      open_tag = "<#{@tag} #{attributes}>".sub(/\s>/, '>')
-      close_tag = "</#{@tag}>"
-
-      "#{open_tag}#{@body}#{close_tag}"
-    end
-  end
-
-  module Result
-    TAGS = %w(h1 div p svg rect)
-
-    for tag in TAGS
-      define_method(tag) do |*args, **params, &block|
-        @root ||= __method__
-        result = super(*args, **params, &block).serialize
-        return result unless @root == __method__
-
-        puts(result)
-        @root = nil
-      end
-    end
-  end
+  DSL = %w(h1 div p svg rect)
 
   class << self
-    prepend Result
+    require_relative 'html/builder'
+
+    prepend Builder
 
     def svg(width, height, &block)
-      build_tag('svg', attrs: { width:, height:, xmlns: "http://www.w3.org/2000/svg" }, body: block&.call)
+      { width:, height:, xmlns: "http://www.w3.org/2000/svg", body: block&.call }
     end
 
     def rect(width, height, x, y, &block)
-      build_tag('rect', attrs: { width:, height:, x:, y: }, body: block&.call)
+      { width:, height:, x:, y:, body: block&.call }
     end
 
-    def div(&block)
-      build_tag('div', body: block&.call)
+    def div(body = nil, &block)
+      { body: body || block&.call }
     end
 
-    def h1(body)
-      build_tag('h1', body:)
+    def h1(body = nil, &block)
+      { body: body || block&.call }
     end
 
-    def p(body)
-      build_tag('p', body:)
-    end
-
-    private
-
-    def build_tag(tag, attrs: {}, body: '')
-      Tag.new(tag, attrs:, body:)
+    def p(body = nil, &block)
+      { body: body || block&.call }
     end
   end
 end
