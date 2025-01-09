@@ -1,28 +1,4 @@
-module HTML
-  module Dsl
-    METHODS = %w(h1 div p svg rect)
-
-    def svg(width, height, &block)
-      { width:, height:, xmlns: "http://www.w3.org/2000/svg", body: block&.call }
-    end
-
-    def rect(width, height, x, y, &block)
-      { width:, height:, x:, y:, body: block&.call }
-    end
-
-    def div(body = nil, &block)
-      { body: body || block&.call }
-    end
-
-    def h1(body = nil, &block)
-      { body: body || block&.call }
-    end
-
-    def p(body = nil, &block)
-      { body: body || block&.call }
-    end
-  end
-
+class HTML
   module Tag
     module_function
 
@@ -35,6 +11,8 @@ module HTML
   end
 
   module Renderer
+    require_relative 'html/dsl'
+
     for tag in Dsl::METHODS
       define_method(tag) do |*args, **attrs, &block|
         @root ||= __method__
@@ -42,14 +20,26 @@ module HTML
         result = Tag.call(__method__, **super(*args, &block).merge(attrs))
         return result unless @root == __method__
 
-        puts(result)
+        @buffer ? @buffer += result : @stdout.puts(result)
         @root = nil
       end
     end
   end
 
   class << self
-    prepend Renderer
-    include Dsl
+    def buffer
+      new.tap { |html| html.instance_eval { @buffer = '' } }
+    end
+
+    def printer(stdout: $stdout)
+      new.tap { |html| html.instance_eval { @stdout = stdout } }
+    end
+  end
+
+  prepend Renderer
+  include Dsl
+
+  def buffer!
+    @buffer
   end
 end
