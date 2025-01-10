@@ -1,30 +1,12 @@
 class SGML
-  module Tag
-    module_function
+  CORE_METHODS = %i[tap instance_eval buffer! byebug]
+  (instance_methods - CORE_METHODS).each { |method| undef_method(method) }
 
-    def call(tag, **attrs)
-      body = attrs&.delete(:body)
-      attrs = attrs&.map { |key, value| "#{key}=\"#{value}\"" }.join(' ')
+  require_relative 'sgml/dsl'
+  require_relative 'sgml/renderer'
 
-      "<#{tag} #{attrs}>#{body}</#{tag}>".sub(/\s>/, '>')
-    end
-  end
-
-  module Renderer
-    require_relative 'sgml/dsl'
-
-    for tag in Dsl::METHODS
-      define_method(tag) do |*args, **attrs, &block|
-        @root ||= __method__
-
-        result = Tag.call("#{@namespace}#{__method__}", **attrs.merge(super(*args)).merge({ body: block&.call }.compact))
-        return result unless @root == __method__
-
-        @buffer ? @buffer += result : @stdout.puts(result)
-        @root = nil
-      end
-    end
-  end
+  include Dsl
+  prepend Renderer
 
   class << self
     def buffer(namespace: nil)
@@ -35,9 +17,6 @@ class SGML
       new(namespace).tap { |html| html.instance_eval { @stdout = stdout } }
     end
   end
-
-  prepend Renderer
-  include Dsl
 
   def initialize(namespace)
     @namespace = namespace += ':' if namespace

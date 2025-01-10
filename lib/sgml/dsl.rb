@@ -1,14 +1,5 @@
 class SGML
   module Dsl
-    # todo remove and onfly with method_missing
-    METHODS = %w(h1 div span p input svg rect) 
-
-    for method in METHODS
-      define_method(method) do |body = nil|
-        { body: }
-      end
-    end
-
     def svg(width, height)
       { width:, height:, xmlns: "http://www.w3.org/2000/svg" }
     end
