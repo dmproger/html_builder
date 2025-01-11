@@ -1,12 +1,5 @@
 class SGML
-  CORE_METHODS = %i[tap instance_eval buffer! byebug]
-  (instance_methods - CORE_METHODS).each { |method| undef_method(method) }
-
-  require_relative 'sgml/dsl'
-  require_relative 'sgml/renderer'
-
-  include Dsl
-  prepend Renderer
+  require_relative 'sgml/engine'
 
   class << self
     def buffer(namespace: nil)
@@ -17,6 +10,8 @@ class SGML
       new(namespace).tap { |html| html.instance_eval { @stdout = stdout } }
     end
   end
+
+  include Engine
 
   def initialize(namespace)
     @namespace = namespace += ':' if namespace
